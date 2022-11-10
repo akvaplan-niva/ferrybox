@@ -35,7 +35,7 @@ ${endpointsOverview()}
 ## Service documentation
 
 ### GET
-Daily messages are available at \`/$endpoint/$year/$month/$day\`.
+Daily messages are available at \`/$endpoint/$isodate\`.
 
 ### POST
 Messages are creating by sending a JSON or NDJSON body and authorization header to a FerryBox endpoint via HTTP POST.
