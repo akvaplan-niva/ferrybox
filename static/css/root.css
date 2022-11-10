@@ -1,0 +1,85 @@
+:root {
+  --blue-0: hsl(200deg 66% 9%);
+  --blue-1: hsl(200deg 66% 11%);
+  --blue-2: hsl(200deg 66% 17%); /* original dark blue */
+  --blue-3: hsl(200deg 40% 26%);
+  --blue-4: hsl(200deg 65% 29%);
+  --blue-5: hsl(200deg 65% 50%); /* Contrast 5.25/AAA on blue-1 */
+  --accent: rgb(87,195,198);
+  --white-0: rgb(250, 250, 250);
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('https://rsms.me/inter/font-files/Inter-roman.var.woff2?v=3.19') format('woff2');
+  font-named-instance: 'Regular';
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {       
+  color-scheme: dark light;
+  font-family: Inter, sans-serif;
+  accent-color: rgb(87,195,198);
+  margin: 0;
+  padding: 0;
+  min-height: 110vh;
+  scroll-behavior: smooth;
+  text-rendering: optimizeSpeed;
+}
+
+header,footer {       
+  display: grid;
+  place-items: center;
+}
+
+main {
+ padding: 1rem;
+ margin-left: 1rem;
+ margin-right: 1rem;
+}
+
+a {
+  color: var(--white-0);
+}
+
+a.cc-icon {
+  text-decoration: none;
+}
+
+apn-logo {
+  min-width: 200px;
+  margin: 0.5rem;
+}
+.accent, .markdown-body a {
+  color: var(--accent);
+}
+
+  
+.dark { font-family: Inter,sans; 
+  background: linear-gradient(0deg,
+    var(--blue-4), var(--blue-3), var(--blue-2), var(--blue-1), var(--blue-0)
+  );
+  color: var(--white-0) 
+}
+
+.markdown-body h1 {
+  border-bottom: 1px solid var(--blue-2);
+}
+.markdown-body h2 {
+  color: var(--blue-5);
+  border-bottom: 1px solid var(--blue-0);
+}
+
+.markdown-body { 
+  display: grid;
+  font-family: Inter, sans; 
+  background: var(--blue-1);
+  color: var(--white-0);
+}
+

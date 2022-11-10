@@ -1,0 +1,12 @@
+{
+  "imports": {
+    "azure_blob_proxy/": "/home/che/akvaplan-niva/azure_blob_proxy/",
+    "azure_storage_client/": "https://deno.land/x/azure_storage_client@0.4.0/",
+    "http/": "https://deno.land/std@0.162.0/http/",
+    "streams/": "https://deno.land/std@0.162.0/streams/",
+    "std/media_types/mod.ts": "https://deno.land/std@0.162.0/media_types/mod.ts",
+    "gfm/": "https://deno.land/x/gfm@0.1.26/",
+    "prismjs/": "https://esm.sh/prismjs@1.27.0/",
+    "scrypt_basic_auth/": "https://deno.land/x/scrypt_basic_auth@1.0.2/"
+  }
+}
