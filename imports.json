@@ -1,6 +1,6 @@
 {
   "imports": {
-    "azure_blob_proxy/": "/home/che/akvaplan-niva/azure_blob_proxy/",
+    "azure_blob_proxy/": "https://deno.land/x/azure_blob_proxy/",
     "azure_storage_client/": "https://deno.land/x/azure_storage_client@0.4.0/",
     "http/": "https://deno.land/std@0.162.0/http/",
     "streams/": "https://deno.land/std@0.162.0/streams/",
