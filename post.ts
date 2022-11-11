@@ -1,14 +1,11 @@
-import {
-  endpointPattern,
-  ferryboxOptions,
-  groupby1day,
-  pathP1D,
-} from "./config.ts";
+import { endpointPattern, ferryboxOptions } from "./config.ts";
+import { pathP1D } from "./cloud.ts";
+import { groupby1day } from "./grouping.ts";
 import { ndjsonGenerator } from "./ndjson.ts";
 
 // @todo fetchers (GET,PUT) via "cloud" options
 import { storageFactory } from "./azure.ts";
-import { get, put } from "azure_blob_proxy/mod.ts";
+import { get as getAzure, put as putAzure } from "azure_blob_proxy/mod.ts";
 
 export const post = async (request: Request): Promise<Response> => {
   const { endpoints } = ferryboxOptions;
@@ -32,10 +29,10 @@ export const post = async (request: Request): Promise<Response> => {
       const format = "ndjson";
 
       for (const [isodate, messages] of map) {
-        const path = pathP1D(endpoint, isodate, format);
+        const path = pathP1D({ endpoint, isodate, format });
 
         let existing = "";
-        const existingResponse = await get({
+        const existingResponse = await getAzure({
           request,
           storage,
           container,
@@ -49,7 +46,7 @@ export const post = async (request: Request): Promise<Response> => {
         const body = new TextEncoder().encode(existing + ndjson);
         const { headers, url, method } = request;
 
-        return put({
+        return putAzure({
           request: new Request(url, { body, method, headers }),
           storage,
           container,

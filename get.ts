@@ -1,6 +1,7 @@
 //import { putGroupedNDJSON } from "./putGroupedNDJSON";
 import { storageFactory } from "./azure.ts";
-import { endpointPattern, isodatePattern, pathP1D } from "./config.ts";
+import { endpointPattern, isodatePattern } from "./config.ts";
+import { pathP1D } from "./cloud.ts";
 import { welcome } from "./html.js";
 import { get as getAzure } from "azure_blob_proxy/mod.ts";
 
@@ -24,14 +25,14 @@ export const get = async (request: Request): Promise<Response> => {
   if (endpointPattern.test(request.url)) {
     return list(request);
   }
-
   const match = isodatePattern.exec(request.url);
 
   if (match) {
     const { year, month, day, endpoint } = match.pathname.groups;
     const isodate = `${year}-${month}-${day}`;
     const storage = storageFactory();
-    const path = pathP1D(endpoint, isodate, "ndjson");
+    const format = "ndjson";
+    const path = pathP1D({ endpoint, isodate, format });
     const container = endpoint;
 
     const r = await getAzure({ request, storage, container, path });
