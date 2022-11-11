@@ -1,7 +1,7 @@
 import { CSS as gfmcss, render } from "gfm/mod.ts";
 import "prismjs/components/prism-bash?no-check";
-
-import { ferryboxOptions, times } from "./config.ts";
+import { ferryboxOptions } from "./config.ts";
+import { times } from "./time.ts";
 
 export { gfmcss };
 
