@@ -43,30 +43,6 @@ if ("azure" === cloud) {
   azure.containers = endpoints;
 }
 
-export const groupby1day = (msg: Record<string, unknown>) => {
-  const { time } = msg;
-  const t = time ? new Date(time) : new Date();
-  const { isodate } = times(t);
-  return isodate;
-};
-
-export const times = (t: Date = new Date()) => {
-  const isodate = new Date(t).toJSON().split("T")[0];
-  const [month, day] = isodate.split("-").slice(1);
-  const year = t.getUTCFullYear();
-  return { year, month, day, isodate };
-};
-
-export const pathP1D = (
-  endpoint: string,
-  isodate: string,
-  format = "ndjson",
-) => {
-  const { dataVersion, durationSpecifier } = ferryboxOptions;
-  return `${dataVersion}/${durationSpecifier}/${
-    isodate.split("-").join("/")
-  }/${endpoint}_${isodate}_${dataVersion}.${format}`;
-};
 export const endpointPattern = new URLPattern({
   pathname: "/:endpoint([a-z][\\w-]+)",
 });
