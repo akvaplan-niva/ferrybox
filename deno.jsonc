@@ -2,6 +2,7 @@
   "importMap": "imports.json",
   "tasks": {
     "dev": "deno run --watch --unstable --allow-read --allow-env --allow-net mod.ts",
+    "test": "deno test --allow-env",
     "build-documentation": "deno run --allow-write=static/ferrybox.md --allow-env --location=https://ferrybox.deno.dev documentation.ts"
   }
 }
