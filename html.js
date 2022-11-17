@@ -1,6 +1,13 @@
 import { markup } from "./documentation.ts";
 
-const buildhtml = ({ base, lang, markup }) =>
+export const build = (
+  {
+    base,
+    lang,
+    markup,
+    title = "Service documentation – FerryBox oceanography",
+  },
+) =>
   `<!DOCTYPE html>
 <html lang="${lang}">
   <head>
@@ -8,7 +15,7 @@ const buildhtml = ({ base, lang, markup }) =>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="color-scheme" "content="dark">
     <base href="${base}">
-    <title>Service documentation – FerryBox oceanography</title>
+    <title>${title}</title>
     <link rel="stylesheet" href="/static/css/root.css">
     <script type="module">
       import "https://graphical-profile.vercel.app/index.js";
@@ -33,7 +40,7 @@ export const welcome = (request) => {
   const base = request.url;
   const lang = "en";
   const htmldocs = markup(base, lang);
-  const html = buildhtml({ base, lang, markup: htmldocs });
+  const html = build({ base, lang, markup: htmldocs });
   return new Response(html, {
     status: 200,
     headers: { "content-type": "text/html" },
