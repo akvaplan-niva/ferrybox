@@ -15,8 +15,7 @@ export const storageFactory = () => {
 
 export { azureProxyConfig };
 
-const reverseCreated = (a: any, b: any) =>
-  Number(new Date(b?.created)) - Number(new Date(a?.created));
+const reverseName = (a: any, b: any) => b?.name?.localeCompare(a?.name);
 
 export const parseAzureListXML = (xml: string) => {
   const { EnumerationResults: { Blobs: { Blob } } } = parse(xml);
@@ -25,5 +24,5 @@ export const parseAzureListXML = (xml: string) => {
     name: Name,
     created: new Date(Properties["Creation-Time"]).toJSON(),
     modified: new Date(Properties["Last-Modified"]).toJSON(),
-  })).sort(reverseCreated);
+  })).sort(reverseName);
 };
