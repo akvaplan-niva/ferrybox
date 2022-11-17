@@ -15,6 +15,3 @@ export const pathP1D = ({
   const isomonth = `${year}-${month}`;
   return `${dataVersion}/${durationSpecifier}/${year}/${isomonth}/${endpoint}_${isodate}.${format}`;
 };
-
-//Google:
-//https://googleapis.deno.dev/
