@@ -24,7 +24,7 @@ pull request before they can be merged into `main`.
   `scrypt` ([RFC](https://www.rfc-editor.org/rfc/rfc7914.html))
 - Robust, scalable, low-latency operations via Deno
   [Deploy](https://deno.com/deploy)'s distributed edge computing network
-- Built in [documentation](https://ferrybox.deno.deploy)
+- Built in [documentation](https://ferrybox.deno.dev)
 
 ## Use
 
