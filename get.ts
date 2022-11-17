@@ -32,7 +32,7 @@ const index = async (request: Request): Promise<Response> => {
         isodate: extractISODate(name),
       })
     );
-    const markup = urls.map((url) => `<a href="#">${url}</a>`).join("");
+    const markup = urls.map((url) => `<a href="${url}">${url}</a>`).join("");
     return new Response(build({ markup, base, lang }), {
       headers: { "content-type": "text/html" },
     });
