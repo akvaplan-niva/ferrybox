@@ -1,6 +1,6 @@
-import { gfmcss, htmldocs } from "./documentation.ts";
+import { markup } from "./documentation.ts";
 
-const buildhtml = ({ base, lang, main, footer }) =>
+const buildhtml = ({ base, lang, markup }) =>
   `<!DOCTYPE html>
 <html lang="${lang}">
   <head>
@@ -9,9 +9,6 @@ const buildhtml = ({ base, lang, main, footer }) =>
     <meta name="color-scheme" "content="dark">
     <base href="${base}">
     <title>Service documentation – FerryBox oceanography</title>
-    <style>
-      ${gfmcss}
-    </style>
     <link rel="stylesheet" href="/static/css/root.css">
     <script type="module">
       import "https://graphical-profile.vercel.app/index.js";
@@ -24,10 +21,10 @@ const buildhtml = ({ base, lang, main, footer }) =>
     </header>
 
     <main data-color-mode="dark" data-light-theme="light" data-dark-theme="dark" class="markdown-body">
-      ${main}
+      ${markup}
     </main>
 
-    <footer>${footer}</footer>
+    <footer><apn-logo white></apn-logo></footer>
 
   </body>
 </html>`;
@@ -35,9 +32,8 @@ const buildhtml = ({ base, lang, main, footer }) =>
 export const welcome = (request) => {
   const base = request.url;
   const lang = "en";
-  const main = htmldocs(base, lang);
-  const footer = `<apn-logo white></apn-logo>`;
-  const html = buildhtml({ base, lang, main, footer });
+  const htmldocs = markup(base, lang);
+  const html = buildhtml({ base, lang, markup: htmldocs });
   return new Response(html, {
     status: 200,
     headers: { "content-type": "text/html" },
