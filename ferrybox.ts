@@ -1,18 +1,14 @@
+import { ferryboxOptions } from "./config.ts";
 import { FerryBoxCreateOptions, FetchHandler } from "./types.ts";
+import { internalServerError, notAllowed } from "./error_responses.ts";
 import { basicAuthUnlessSafe } from "scrypt_basic_auth/mod.ts";
 import { serveDir } from "http/file_server.ts";
 
-const notAllowed = (request: Request) =>
-  new Response(
-    `405 ${request.method} not allowed`,
-    { status: 405 },
-  );
-
 export const createFerryBoxServer =
-  (options: FerryBoxCreateOptions): FetchHandler =>
+  (options: FerryBoxCreateOptions = ferryboxOptions): FetchHandler =>
   async (request: Request): Promise<Response> => {
     const { pathname } = new URL(request.url);
-    if (pathname.startsWith("/static/")) {
+    if (pathname.startsWith("/static")) {
       return serveDir(request, {
         fsRoot: import.meta.resolve("./").replace("file:/", ""),
       });
@@ -27,7 +23,8 @@ export const createFerryBoxServer =
     try {
       return handler(request);
     } catch (e) {
+      //@todo Persist handler errors
       console.error(e);
-      throw "Service Unavailable";
+      return internalServerError(request);
     }
   };

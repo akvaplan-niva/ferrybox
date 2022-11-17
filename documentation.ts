@@ -1,80 +1,87 @@
-import { CSS as gfmcss, render } from "gfm/mod.ts";
-import "prismjs/components/prism-bash?no-check";
 import { ferryboxOptions } from "./config.ts";
 import { times } from "./time.ts";
-
-export { gfmcss };
-
-//const code = (text, lang = "") => `\`\`\`${lang}\n${text}\n\`\`\``;
-
-const markdown = (base: string) => {
+import { endpointURL, messagesByISODateURL } from "./routes.ts";
+export const markup = (base: string) => {
+  const lang = "en";
   const now = new Date();
   const { isodate } = times(now);
   const { endpoints } = ferryboxOptions;
 
-  const endpointsOverview = () => {
-    const d = [];
+  const listDates = (d: string[] = []) => {
     for (const endpoint of endpoints) {
-      const url = `/${endpoint}/${isodate}`;
+      const url = endpointURL({ base, endpoint });
       d.push(
-        `<li><a href="/${endpoint}">${endpoint}</a> | <a href="${url}">today</a></li>`,
+        `<br><a href="${url}">${url}</a>`,
+      );
+    }
+    return d.join("\n");
+  };
+  const messagesByISODate = (d: string[] = []) => {
+    for (const endpoint of endpoints) {
+      const url = messagesByISODateURL({ base, endpoint, isodate });
+      d.push(
+        `<br><a href="${url}">${url}</a> (today)`,
       );
     }
     return d.join("\n");
   };
 
-  return `# FerryBox data service
+  return `<article lang="${lang}">
+  
+<section id="ferrybox-data-service">
+  <h1>FerryBox data service</h1>
+  <p>Near realtime <a href="https://www.niva.no/miljodata-pa-nett/ferrybox-ships-of-opportunity" rel="noopener noreferrer">FerryBox</a> data service for <a href="https://akvaplan.niva.no/" rel="noopener noreferrer">Akvaplan-niva</a>.</p>
+</section>
+  
+<section id="service">
+  <h2>HTTP service documentation</h2>
+  
+  <h3 id="get">Read</h3>
+  <p>Data is retrieved using a HTTP GET to one of the routes below.</p>
+  <p>Messages by iso date: ${messagesByISODate()}</p>
+  <p>List of available resource URLs: ${listDates()}</p>
 
-Near realtime [FerryBox](https://www.niva.no/miljodata-pa-nett/ferrybox-ships-of-opportunity) data service for [Akvaplan-niva](https://akvaplan.niva.no).
-The oceanography variables on the FerryBox have 1-minute resolution. Data is sent every 1-15 minutes to one of the endpoints below.
-
-## Endpoints
-
-${endpointsOverview()}
-
-## Service documentation
-
-### GET
-Daily messages are available at \`/$endpoint/$isodate\`.
-
-### POST
-Messages are creating by sending a JSON or NDJSON body and authorization header to a FerryBox endpoint via HTTP POST.
-
-Each message _must_ have the following members:
-
-- \`time\` GPS time/sensor time (ISO8601)
-- \`lon\`: longitude
-- \`lat\`: latitude 
-
-## Credits
-### Open source
-The FerryBox data service is open source and in git version control:
-https://github.com/akvaplan-niva/ferrybox
-
-### Funding
-Akvaplan-niva's FerryBox operations are funded via [Research Council of Norway](https://prosjektbanken.forskningsradet.no/project/FORISS/269922)'s funding of the [NorSOOP](https://www.niva.no/en/projectweb/norsoop) program.
-
-### Open data
-${cc0(base)}`;
-};
-
-export const cc0 = (base: string) =>
-  `<div xmlns:dct="http://purl.org/dc/terms/">
-  <p>
-    <a href="${base}" property="dct:title">FerryBox oceanography</a>, by <a rel="dct:creator"><a href="https://akvaplan.niva.no/" property="dct:title">Akvaplan-niva</a>, is open data in the public domain, free of known copyright restrictions.
-    <a class="cc-icon" rel="license" href="http://creativecommons.org/publicdomain/mark/1.0/">
-      <span id="cc-logo" class="icon"><img alt="cc logo" src="https://creativecommons.org/images/deed/cc_icon_white_x2.png" width=24></span>
-      <span class="icon"><img alt="cc pd" src="https://creativecommons.org/images/deed/zero_white_x2.png" width=24></span>
-    </a>
+  <h3 id="post">Create</h3>
+  <p>Messages are created when a FerryBox sends a HTTP POST to the endpoint URL.
+  The POST request must have a valid authorization header and a valid JSON or NDJSON body.
   </p>
-</div>`;
+</section>
 
-export const htmldocs = (base: string, lang: string) =>
-  lang === "en"
-    ? render(markdown(base), { baseUrl: base })
-    : new Error("Unsupported language");
+<section id="data">
+  <h2>Data</h2>
+  <p>The data in this service is raw and unprocessed.</p>
 
-if (import.meta.main) {
-  const md = markdown(location.href);
-  console.log(md);
-}
+  <h3>Formats</h3>
+  <p>…</p>
+
+  <h3>Variables</h3>
+  <p>…</p>
+
+  <h3>Sensors</h3>
+  <p>…</p>
+
+  <h3>Time resolution</h3>
+  <p>The oceanography variables are recorded with a 1-minute resolution, ie. each row of data has a point time, but the values provided are mean values of the preceeding 60 seconds.</p>
+</section>
+
+<section id="credits">
+  <h2>Credits</h2>
+  
+  <h3>Open source</h3>
+  <p>The FerryBox data service is open source and in git version control on <a href="https://github.com/akvaplan-niva/ferrybox" rel="noopener noreferrer">akvaplan-niva/ferrybox</a></p>
+  
+  <h3>Funding</h3>
+  <p>Akvaplan-niva's FerryBox operations are funded via <a href="https://prosjektbanken.forskningsradet.no/project/FORISS/269922" rel="noopener noreferrer">Research Council of Norway</a>'s funding of the <a href="https://www.niva.no/en/projectweb/norsoop" rel="noopener noreferrer">NorSOOP</a> program.</p>
+  
+  <h3>Open data</h3>
+  <p>
+    <a href="${base}">FerryBox oceanography</a>, by <a rel="dct:creator"><a href="https://akvaplan.niva.no/">Akvaplan-niva</a>, is open data in the public domain, free of known copyright restrictions.
+    <a rel="license" href="http://creativecommons.org/publicdomain/mark/1.0/">
+      <span><img alt="cc logo" src="https://creativecommons.org/images/deed/cc_icon_white_x2.png" width="24" /></span>
+      <span><img alt="cc pd" src="https://creativecommons.org/images/deed/zero_white_x2.png" width="24" /></span>
+    </a>
+  </a></p>
+</section>
+
+</article>`;
+};

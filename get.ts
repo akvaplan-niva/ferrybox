@@ -1,29 +1,48 @@
-//import { putGroupedNDJSON } from "./putGroupedNDJSON";
-import { storageFactory } from "./azure.ts";
 import { endpointPattern, isodatePattern } from "./config.ts";
+import { parseAzureListXML, storageFactory } from "./azure.ts";
 import { pathP1D } from "./cloud.ts";
-import { welcome } from "./html.js";
-import { get as getAzure } from "azure_blob_proxy/mod.ts";
+import { messagesByISODateURL } from "./routes.ts";
+import { build, welcome } from "./html.js";
 
-const list = async (request: Request): Promise<Response> => {
+import { get as getAzure } from "azure_blob_proxy/mod.ts";
+import { markup } from "./documentation.ts";
+
+const extractISODate = (s: string) =>
+  /([0-9]{4}\-[0-9]{2}\-[0-9]{2})/.exec(s)?.at(1);
+
+const index = async (request: Request): Promise<Response> => {
   const match = endpointPattern.exec(request.url);
   if (match) {
     const storage = storageFactory();
     const { endpoint, dataVersion } = match.pathname.groups;
+
     const r = await storage.container(endpoint).list(dataVersion);
-    const { body } = r;
-    const headers = new Headers([...r.headers, [
-      "content-type",
-      "application/xml",
-    ]]);
-    return new Response(body, { headers });
+    if (!r.ok) {
+      return r;
+    }
+    const list = parseAzureListXML(await r.text());
+
+    const base = request.url;
+    const lang = "en";
+
+    const urls = list.map(({ name }) =>
+      messagesByISODateURL({
+        base,
+        endpoint,
+        isodate: extractISODate(name),
+      })
+    );
+    const markup = urls.map((url) => `<a href="#">${url}</a>`).join("");
+    return new Response(build({ markup, base, lang }), {
+      headers: { "content-type": "text/html" },
+    });
   }
   return welcome(request);
 };
 
 export const get = async (request: Request): Promise<Response> => {
   if (endpointPattern.test(request.url)) {
-    return list(request);
+    return index(request);
   }
   const match = isodatePattern.exec(request.url);
 

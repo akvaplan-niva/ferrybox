@@ -4,6 +4,8 @@ import {
 } from "azure_blob_proxy/mod.ts";
 import { AzureStorage } from "azure_storage_client/mod.ts";
 
+import { parse } from "https://deno.land/x/xml/mod.ts";
+
 export const storageFactory = () => {
   const options = azureProxyConfig();
   const { account, key, suffix } = options;
@@ -12,3 +14,16 @@ export const storageFactory = () => {
 };
 
 export { azureProxyConfig };
+
+const reverseCreated = (a: any, b: any) =>
+  Number(new Date(b?.created)) - Number(new Date(a?.created));
+
+export const parseAzureListXML = (xml: string) => {
+  const { EnumerationResults: { Blobs: { Blob } } } = parse(xml);
+
+  return Blob.map(({ Name, Properties }) => ({
+    name: Name,
+    created: new Date(Properties["Creation-Time"]).toJSON(),
+    modified: new Date(Properties["Last-Modified"]).toJSON(),
+  })).sort(reverseCreated);
+};
