@@ -29,12 +29,12 @@ const handlers = new Map<string, FetchHandler>([
 const dataVersion = "v0";
 const durationSpecifier = "p1d";
 export const ferryboxOptions: FerryBoxCreateOptions = {
+  ...getEnvConfig(Deno.env),
   durationSpecifier,
   durationSpecifiers: new Set<string>([durationSpecifier, "p1m"]),
   dataVersion,
   handlers,
   //desc,
-  ...getEnvConfig(Deno.env),
 };
 
 const { cloud, endpoints } = ferryboxOptions;
