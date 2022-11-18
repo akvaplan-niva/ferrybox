@@ -3,9 +3,9 @@ import { parseAzureListXML, storageFactory } from "./azure.ts";
 import { pathP1D } from "./cloud.ts";
 import { messagesByISODateURL } from "./routes.ts";
 import { build, welcome } from "./html.js";
+import { cors } from "./headers.ts";
 
 import { get as getAzure } from "azure_blob_proxy/mod.ts";
-import { markup } from "./documentation.ts";
 
 const extractISODate = (s: string) =>
   /([0-9]{4}\-[0-9]{2}\-[0-9]{2})/.exec(s)?.at(1);
@@ -56,10 +56,11 @@ export const get = async (request: Request): Promise<Response> => {
 
     const r = await getAzure({ request, storage, container, path });
     const { body } = r;
-    const headers = new Headers([...r.headers, [
-      "content-type",
-      "text/plain",
-    ]]);
+    const headers = new Headers({
+      ...r.headers,
+      "content-type": "text/plain",
+      ...cors,
+    });
     if (r.ok) {
       return new Response(body, { headers });
     }
