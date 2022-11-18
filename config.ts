@@ -1,5 +1,6 @@
 import { get } from "./get.ts";
 import { post } from "./post.ts";
+import { options } from "./options.ts";
 
 import { FerryBoxCreateOptions, FetchHandler } from "./types.ts";
 
@@ -17,6 +18,7 @@ const getEnvConfig = (env: Deno.Env) => {
 const handlers = new Map<string, FetchHandler>([
   ["POST", post],
   ["GET", get],
+  ["OPTIONS", options],
 ]);
 
 // const desc = new Map<string, string>([
