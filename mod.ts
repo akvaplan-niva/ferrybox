@@ -1,4 +1,5 @@
 export * from "./config.ts";
+export * from "./handlers.ts";
 export * from "./ferrybox.ts";
 
 import { createFerryBoxServer } from "./ferrybox.ts";
