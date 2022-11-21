@@ -5,7 +5,7 @@ export type FerryBoxCreateOptions = {
   durationSpecifier: string;
   durationSpecifiers: Set<string>;
   //desc: Map<string, string>;
-  handlers: Map<string, FetchHandler>;
+  //handlers: Map<string, FetchHandler>;
   cloud: string;
   azure?: any;
 };

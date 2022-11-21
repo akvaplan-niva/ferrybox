@@ -1,9 +1,4 @@
-import { get } from "./get.ts";
-import { post } from "./post.ts";
-import { options } from "./options.ts";
-
-import { FerryBoxCreateOptions, FetchHandler } from "./types.ts";
-
+import { FerryBoxCreateOptions } from "./types.ts";
 import { azureProxyConfig } from "./azure.ts";
 
 const getEnvConfig = (env: Deno.Env) => {
@@ -14,12 +9,6 @@ const getEnvConfig = (env: Deno.Env) => {
     cloud: env.get("ferrybox_cloud") ?? "azure",
   };
 };
-
-const handlers = new Map<string, FetchHandler>([
-  ["POST", post],
-  ["GET", get],
-  ["OPTIONS", options],
-]);
 
 // const desc = new Map<string, string>([
 //   [
@@ -35,7 +24,6 @@ export const ferryboxOptions: FerryBoxCreateOptions = {
   durationSpecifier,
   durationSpecifiers: new Set<string>([durationSpecifier, "p1m"]),
   dataVersion,
-  handlers,
   //desc,
 };
 

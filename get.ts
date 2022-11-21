@@ -58,8 +58,8 @@ export const get = async (request: Request): Promise<Response> => {
     const { body } = r;
     const headers = new Headers({
       ...r.headers,
-      "content-type": "text/plain",
       ...cors,
+      "content-type": "text/plain",
     });
     if (r.ok) {
       return new Response(body, { headers });
