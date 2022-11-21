@@ -20,7 +20,7 @@ export const createFerryBoxServer =
 
     const handler: FetchHandler = handlers.get(request.method.toUpperCase()) ??
       notAllowed;
-      
+
     try {
       return handler(request);
     } catch (e) {

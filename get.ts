@@ -4,6 +4,7 @@ import { pathP1D } from "./cloud.ts";
 import { messagesByISODateURL } from "./routes.ts";
 import { build, welcome } from "./html.js";
 import { cors } from "./headers.ts";
+import { ListObject } from "./types.ts";
 
 import { get as getAzure } from "azure_blob_proxy/mod.ts";
 
@@ -25,7 +26,7 @@ const index = async (request: Request): Promise<Response> => {
     const base = request.url;
     const lang = "en";
 
-    const urls = list.map(({ name }) =>
+    const urls = list.map(({ name }: ListObject) =>
       messagesByISODateURL({
         base,
         endpoint,
