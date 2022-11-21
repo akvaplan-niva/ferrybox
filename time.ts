@@ -9,7 +9,7 @@ export const isGregorianISODate = (time: string): boolean => {
     assert(+month > 0 && +month < 13);
     assert(+day > 0 && +day < 32);
     return true;
-  } catch (e) {
+  } catch {
     return false;
   }
 };
