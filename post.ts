@@ -1,4 +1,5 @@
-import { endpointPattern, ferryboxOptions } from "./config.ts";
+import { ferryboxOptions } from "./config.ts";
+import { endpointPattern } from "./routes.ts";
 import { pathP1D } from "./cloud.ts";
 import { groupby1day } from "./grouping.ts";
 import { ndjsonGenerator } from "./ndjson.ts";
@@ -18,8 +19,10 @@ export const post = async (request: Request): Promise<Response> => {
       for await (const msg of ndjsonGenerator(request)) {
         const k = groupby1day(msg);
         const v = map.has(k) ? [...(map.get(k) ?? []), msg] : [msg];
+
         map.set(k, v);
       }
+      //const sha256 = await crypto.subtle.digest("SHA-256", new TextEncoder().encode());
       // const statuses = new Set<number>();
       // const ok = new Map<string, string[]>();
       // const error = new Map<string, string[]>();
@@ -44,6 +47,7 @@ export const post = async (request: Request): Promise<Response> => {
         }
         const ndjson = messages.map((m) => JSON.stringify(m)).join("\n") + "\n";
         const body = new TextEncoder().encode(existing + ndjson);
+
         const { headers, url, method } = request;
 
         return putAzure({

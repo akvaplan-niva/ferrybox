@@ -33,7 +33,11 @@ body {
   text-rendering: optimizeSpeed;
 }
 
-header,footer {       
+header {
+  min-height: 63.25px;
+}
+
+header,footer,main {       
   display: grid;
   place-items: center;
 }
@@ -62,7 +66,7 @@ apn-logo {
 }
 
   
-.dark { font-family: Inter,sans; 
+.dark { font-family: Inter, sans; 
   background: linear-gradient(0deg,
   var(--blue-4), var(--blue-3), var(--blue-2), var(--blue-1), var(--blue-0));
   color: var(--white-0) 

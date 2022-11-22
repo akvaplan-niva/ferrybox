@@ -5,7 +5,7 @@ export const build = (
     base,
     lang,
     markup,
-    title = "Service documentation – FerryBox oceanography",
+    title = "FerryBox data service",
   },
 ) =>
   `<!DOCTYPE html>
@@ -27,7 +27,7 @@ export const build = (
       <apn-logo white></apn-logo>
     </header>
 
-    <main data-color-mode="dark" data-light-theme="light" data-dark-theme="dark" class="markdown-body">
+    <main class="markdown-body">
       ${markup}
     </main>
 

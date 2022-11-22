@@ -1,11 +1,15 @@
-import { endpointPattern, isodatePattern } from "./config.ts";
-import { parseAzureListXML, storageFactory } from "./azure.ts";
-import { pathP1D } from "./cloud.ts";
+import { endpointPattern, isodatePattern } from "./routes.ts";
+
 import { messagesByISODateURL } from "./routes.ts";
+import { notImplemented } from "./error_responses.ts";
+
 import { build, welcome } from "./html.js";
-import { cors } from "./headers.ts";
+import { cors, html, ndjson } from "./headers.ts";
+
+import { pathP1D } from "./cloud.ts";
 import { ListObject } from "./types.ts";
 
+import { parseAzureListXML, storageFactory } from "./azure.ts";
 import { get as getAzure } from "azure_blob_proxy/mod.ts";
 
 const extractISODate = (s: string) =>
@@ -13,6 +17,7 @@ const extractISODate = (s: string) =>
 
 const index = async (request: Request): Promise<Response> => {
   const match = endpointPattern.exec(request.url);
+
   if (match) {
     const storage = storageFactory();
     const { endpoint, dataVersion } = match.pathname.groups;
@@ -33,15 +38,22 @@ const index = async (request: Request): Promise<Response> => {
         isodate: extractISODate(name),
       })
     );
-    const markup = urls.map((url) => `<a href="${url}">${url}</a>`).join("");
-    return new Response(build({ markup, base, lang }), {
-      headers: { "content-type": "text/html" },
-    });
+
+    const wantsOrAcceptsHTML = /(ht|x)ml/i.test(
+      request.headers.get("accept") ?? "",
+    );
+    if (wantsOrAcceptsHTML) {
+      const markup = urls.map((url) => `<a href="${url}">${url}</a>`).join("");
+      return new Response(build({ markup, base, lang }), {
+        headers: html,
+      });
+    }
+    return notImplemented();
   }
   return welcome(request);
 };
 
-export const get = async (request: Request): Promise<Response> => {
+export const getByISODate = async (request: Request): Promise<Response> => {
   if (endpointPattern.test(request.url)) {
     return index(request);
   }
@@ -55,17 +67,13 @@ export const get = async (request: Request): Promise<Response> => {
     const path = pathP1D({ endpoint, isodate, format });
     const container = endpoint;
 
-    const r = await getAzure({ request, storage, container, path });
-    const { body } = r;
-    const headers = new Headers({
-      ...r.headers,
-      ...cors,
-      "content-type": "text/plain",
-    });
-    if (r.ok) {
-      return new Response(body, { headers });
+    const response = await getAzure({ request, storage, container, path });
+
+    if (!response.ok) {
+      return response;
     }
-    return r;
+    const headers: HeadersInit = { ...response.headers, ...cors, ...ndjson };
+    return new Response(response.body, { headers });
   }
   return welcome(request);
 };

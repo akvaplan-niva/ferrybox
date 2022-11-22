@@ -2,6 +2,7 @@
 export type FerryBoxCreateOptions = {
   endpoints: Set<string>;
   dataVersion: string;
+  serviceVersion: string;
   durationSpecifier: string;
   durationSpecifiers: Set<string>;
   cloud: string;

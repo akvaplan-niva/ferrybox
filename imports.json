@@ -3,9 +3,11 @@
     "azure_blob_proxy/": "https://deno.land/x/azure_blob_proxy@0.1.1/",
     "azure_storage_client/": "https://deno.land/x/azure_storage_client@0.4.0/",
     "http/": "https://deno.land/std@0.164.0/http/",
+    "jtd/": "https://deno.land/x/jtd@v0.1.0/",
     "scrypt_basic_auth/": "https://deno.land/x/scrypt_basic_auth@1.0.2/",
     "std/media_types/mod.ts": "https://deno.land/std@0.164.0/media_types/mod.ts",
     "streams/": "https://deno.land/std@0.164.0/streams/",
-    "testing/": "https://deno.land/std@0.164.0/testing/"
+    "testing/": "https://deno.land/std@0.164.0/testing/",
+    "xml/": "https://deno.land/x/xml/"
   }
 }
