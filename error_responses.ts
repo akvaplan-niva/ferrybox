@@ -1,11 +1,15 @@
+// https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
+
+const statusMap = new Map<number, string>([[422, "Unprocessable Entity"]]);
+export const statusText = (status: number): string =>
+  `${status} ${statusMap.get(status)}\n`;
+
 export const methodNotAllowed = (
   body: BodyInit = "405 Method Not Allowed\n",
   opts: ResponseInit = { status: 405 },
 ) => new Response(body, opts);
-
-//https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/422
 export const unprocessableEntity = (
-  body: BodyInit = "422 Unprocessable Entity\n",
+  body: BodyInit = statusText(422),
   opts: ResponseInit = { status: 422 },
 ) => new Response(body, opts);
 
