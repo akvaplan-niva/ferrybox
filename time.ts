@@ -1,6 +1,6 @@
-import { assert } from "https://deno.land/std@0.162.0/testing/asserts.ts";
+import { assert } from "testing/asserts.ts";
 
-export const isGregorianISODate = (time: string): boolean => {
+export const isRFC3339Date = (time: string): boolean => {
   try {
     assert(time.length > 9);
     const [year, month, _day] = time.split("-");
@@ -15,7 +15,7 @@ export const isGregorianISODate = (time: string): boolean => {
 };
 export const times = (t: Date = new Date()) => {
   const isodate = new Date(t).toJSON().split("T")[0];
-  isGregorianISODate(isodate);
+  isRFC3339Date(isodate);
   const [month, day] = isodate.split("-").slice(1);
   const year = t.getUTCFullYear();
   return { year, month, day, isodate };

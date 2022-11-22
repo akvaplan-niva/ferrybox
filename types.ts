@@ -27,3 +27,7 @@ export type BlobObject = {
 export type EnumerationResultsObject = {
   Blobs: Record<string, Array<BlobObject>>;
 };
+
+export interface Message {
+  [key: string]: number | string;
+}

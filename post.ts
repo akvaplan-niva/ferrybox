@@ -3,10 +3,12 @@ import { endpointPattern } from "./routes.ts";
 import { pathP1D } from "./cloud.ts";
 import { groupby1day } from "./grouping.ts";
 import { ndjsonGenerator } from "./ndjson.ts";
+import { Message } from "./types.ts";
 
-// @todo fetchers (GET,PUT) via "cloud" options
 import { storageFactory } from "./azure.ts";
 import { get as getAzure, put as putAzure } from "azure_blob_proxy/mod.ts";
+import { validate } from "./json_validate.ts";
+import { statusText, unprocessableEntity } from "./error_responses.ts";
 
 export const post = async (request: Request): Promise<Response> => {
   const { endpoints } = ferryboxOptions;
@@ -32,6 +34,15 @@ export const post = async (request: Request): Promise<Response> => {
       const format = "ndjson";
 
       for (const [isodate, messages] of map) {
+        for (const msg of messages) {
+          const errors = validate(msg as Message);
+          if (errors.length > 0) {
+            const errorText = statusText(422) +
+              `Errors: ${JSON.stringify(errors)}\n`;
+            return unprocessableEntity(errorText);
+          }
+        }
+
         const path = pathP1D({ endpoint, isodate, format });
 
         let existing = "";
@@ -90,5 +101,5 @@ export const post = async (request: Request): Promise<Response> => {
       }
     }
   }
-  return new Response("404", { status: 404 });
+  return new Response("404 Not Found", { status: 404 });
 };

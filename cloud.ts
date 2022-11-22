@@ -1,4 +1,4 @@
-import { isGregorianISODate } from "./time.ts";
+import { isRFC3339Date } from "./time.ts";
 import { ferryboxOptions } from "./config.ts";
 
 // Relative cloud path for 1-day files
@@ -9,7 +9,7 @@ export const pathP1D = ({
   isodate = new Date().toJSON().split("T")[0],
   format = "ndjson",
 }) => {
-  isGregorianISODate(isodate);
+  isRFC3339Date(isodate);
   const { dataVersion, durationSpecifier } = ferryboxOptions;
   const [year, month] = isodate.split("-").slice(0, 2);
   const isomonth = `${year}-${month}`;
