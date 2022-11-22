@@ -1,0 +1,10 @@
+{
+  "properties": {
+    "time": { "type": "timestamp" },
+    "lat": { "type": "float32" },
+    "lon": { "type": "float32" }
+  },
+  "optionalProperties": {
+  },
+  "additionalProperties": true
+}

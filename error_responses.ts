@@ -10,8 +10,8 @@ export const methodNotAllowed = (
 ) => new Response(body, opts);
 export const unprocessableEntity = (
   body: BodyInit = statusText(422),
-  opts: ResponseInit = { status: 422 },
-) => new Response(body, opts);
+  opts: ResponseInit,
+) => new Response(body, { ...opts, status: 422 });
 
 export const internalServerError = (
   body: BodyInit = "500 Internal Server Error\n",
