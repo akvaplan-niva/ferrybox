@@ -1,10 +1,29 @@
 {
+  "metadata": {
+    "v": "0",
+    "self": "https://ferrybox.deno.dev/static/schema/message.jtd.json"
+  },
   "properties": {
-    "time": { "type": "timestamp" },
-    "lat": { "type": "float32" },
-    "lon": { "type": "float32" }
+    "t": { "type": "timestamp" },
+    "x": { "type": "float32" },
+    "y": { "type": "float32" }
   },
   "optionalProperties": {
+    "z": { "type": "float32" },
+    "sal": { "type": "float32" },
+    "cond": { "type": "float32" },
+    "sst": { "type": "float32" },
+    "sound_speed": { "type": "float32" },
+    "o2_sat": { "type": "float32" },
+    "o2_conc": { "type": "float32" },
+    "o2_sst": { "type": "float32" },
+    "cdom": { "type": "float32" },
+    "chl_a": { "type": "float32" },
+    "turb": { "type": "float32" },
+    "c3_sst": { "type": "float32" },
+    "flow": { "type": "float32" },
+    "flow_sst": { "type": "float32" },
+    "ferrybox": { "type": "string" }
   },
   "additionalProperties": true
 }
